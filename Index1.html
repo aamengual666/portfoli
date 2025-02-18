@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enseñanza de Colores RGB</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .container {
+            width: 300px;
+            margin: auto;
+        }
+        .color-box, .complementary-box, .analogous-box {
+            width: 100%;
+            height: 150px;
+            border: 2px solid #000;
+            margin-bottom: 20px;
+        }
+        .control-group {
+            margin-bottom: 10px;
+        }
+        input[type="number"], input[type="range"] {
+            width: 80px;
+            margin: 5px;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h2>Aprende los Colores RGB</h2>
+    <div class="container">
+        <div class="color-box" id="colorBox"></div>
+        <h3>Color Complementario</h3>
+        <div class="complementary-box" id="complementaryBox"></div>
+        <h3>Colores Análogos</h3>
+        <div class="analogous-box" id="analogousBox1"></div>
+        <div class="analogous-box" id="analogousBox2"></div>
+        <div class="control-group">
+            <label>Rojo: <input type="number" id="red" min="0" max="255" value="127"> 
+            <input type="range" id="redRange" min="0" max="255" value="127"></label>
+        </div>
+        <div class="control-group">
+            <label>Verde: <input type="number" id="green" min="0" max="255" value="127"> 
+            <input type="range" id="greenRange" min="0" max="255" value="127"></label>
+        </div>
+        <div class="control-group">
+            <label>Azul: <input type="number" id="blue" min="0" max="255" value="127"> 
+            <input type="range" id="blueRange" min="0" max="255" value="127"></label>
+        </div>
+        <button onclick="updateColor()">Mostrar Color</button>
+    </div>
+    <script>
+        function updateColor() {
+            let r = parseInt(document.getElementById("red").value);
+            let g = parseInt(document.getElementById("green").value);
+            let b = parseInt(document.getElementById("blue").value);
+            
+            let color = `rgb(${r}, ${g}, ${b})`;
+            document.getElementById("colorBox").style.backgroundColor = color;
+            
+            // Color complementario (inverso de RGB)
+            let compR = 255 - r;
+            let compG = 255 - g;
+            let compB = 255 - b;
+            let complementaryColor = `rgb(${compR}, ${compG}, ${compB})`;
+            document.getElementById("complementaryBox").style.backgroundColor = complementaryColor;
+            
+            // Colores análogos (desplazando valores en el círculo cromático)
+            let analogousColor1 = `rgb(${Math.min(255, r + 30)}, ${Math.min(255, g + 30)}, ${Math.min(255, b + 30)})`;
+            let analogousColor2 = `rgb(${Math.max(0, r - 30)}, ${Math.max(0, g - 30)}, ${Math.max(0, b - 30)})`;
+            document.getElementById("analogousBox1").style.backgroundColor = analogousColor1;
+            document.getElementById("analogousBox2").style.backgroundColor = analogousColor2;
+        }
+        
+        function syncInputs(id) {
+            let numberInput = document.getElementById(id);
+            let rangeInput = document.getElementById(id + "Range");
+            
+            numberInput.addEventListener("input", function() {
+                rangeInput.value = this.value;
+                updateColor();
+            });
+            rangeInput.addEventListener("input", function() {
+                numberInput.value = this.value;
+                updateColor();
+            });
+        }
+        
+        syncInputs("red");
+        syncInputs("green");
+        syncInputs("blue");
+    </script>
+</body>
+</html>
